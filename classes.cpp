@@ -2,11 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
-//RPS::RPS{
-  int numChoices = 3;
-  int average = 0;
-  int numPlays = 0;
-//}
+#include <iostream>
+using namespace std;
 int RPS::winCompare(int player, int ai){
   // 0 is a tie
   // 1 is player win
@@ -21,14 +18,17 @@ int RPS::winCompare(int player, int ai){
   }
 }
 void RPS::setAverage(int player){
-  average = round((player + average) / numPlays);
-}
-int getAverage(){
-  return average;
+  numPlays++;
+  average = round((player + total) / numPlays);
+  total += player;
 }
 //meant to always lose against the player
 int RPS::aiEasy(int player){
-  return ((player % numChoices) - 1);
+  if(player > 1){
+    return player - 1;
+  }else{
+    return 3;
+  }
 }
 //meant to be the most fair to play against
 int RPS::aiMedium(){
@@ -37,6 +37,7 @@ int RPS::aiMedium(){
 }
 // should play againt the average
 int RPS::aiHard(int player){
+  RPS::setAverage(player);
   if(average < 3){
     return average + 1;
   }else{
